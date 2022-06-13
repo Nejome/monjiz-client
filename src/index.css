@@ -1,13 +1,35 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    src: url("../public/fonts/Noto_Sans_Arabic/NotoSansArabic-VariableFont_wdth,wght.ttf");
+    font-family: 'Noto Sans Arabic';
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@layer components {
+    .active {
+        @apply !text-green-550 bg-green-50;
+    }
+    .card {
+        @apply bg-white border border-solid rounded-2xl;
+    }
+    .btn1 {
+        @apply inline-block bg-green-550 text-white px-5 py-2 rounded-3xl hover:bg-green-650;
+    }
+}
+
+@font-face {
+    src: url("../public/fonts/Lalezar/Lalezar-Regular.ttf");
+    font-family: 'Lalezar-Regular';
+}
+
+body {
+    direction: rtl;
+    font-family: 'Noto Sans Arabic', sans-serif;
+    background: #f9fafb;
+}
+
+.logo {
+    font-family: 'Lalezar-Regular', sans-serif !important;
 }
