@@ -17,6 +17,9 @@
     .btn1 {
         @apply inline-block bg-green-550 text-white px-5 py-2 rounded-3xl hover:bg-green-650;
     }
+    .input {
+        @apply block w-full h-[43px] px-3 py-2 border border-solid rounded focus:shadow focus:outline-none text-gray-500;
+    }
 }
 
 @font-face {
