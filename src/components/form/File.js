@@ -1,4 +1,5 @@
 import {ErrorMessage, useFormikContext} from "formik";
+import PropTypes from 'prop-types';
 
 export default function File({label, ...props}) {
 
@@ -14,4 +15,10 @@ export default function File({label, ...props}) {
             <ErrorMessage name={name}>{msg => <p className="text-red-500">{msg}</p>}</ErrorMessage>
         </>
     );
+}
+
+File.prototype = {
+    label: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired
 }

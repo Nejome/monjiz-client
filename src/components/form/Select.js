@@ -1,4 +1,5 @@
 import {useField, ErrorMessage} from "formik";
+import PropTypes from 'prop-types';
 
 export default function Select({label, ...props}){
 
@@ -11,4 +12,9 @@ export default function Select({label, ...props}){
             <ErrorMessage name={props.name}>{msg => <p className="text-red-500">{msg}</p>}</ErrorMessage>
         </>
     )
+}
+
+Select.prototype = {
+    label: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
 }

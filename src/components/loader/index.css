@@ -14,6 +14,10 @@
     animation: prixClipFix 2s linear infinite ;
 }
 
+.loader.green::before {
+    border-color: #84cc16;
+}
+
 @keyframes rotate {
     100%   {transform: rotate(360deg)}
 }

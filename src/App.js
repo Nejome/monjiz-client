@@ -1,22 +1,32 @@
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import Home from "./pages/Home";
-import MyProfile from "./pages/MyProfile";
+import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import {CategoriesProvider, AuthProvider} from './context';
+import { AuthProvider,  CategoriesProvider, ProvidersProvider, SelectedCategoryProvider } from './context';
+import ProtectedRoute from "./routes/ProtectedRoute";
+import GuestRoute from "./routes/GuestRoute";
 
 function App() {
   return (
       <AuthProvider>
           <CategoriesProvider>
-              <BrowserRouter>
-                  <Routes>
-                      <Route path="/" element={<Home />}></Route>
-                      <Route path="/my-profile" element={<MyProfile />}></Route>
-                      <Route path="/login" element={<Login />}></Route>
-                      <Route path="/register" element={<Register />}></Route>
-                  </Routes>
-              </BrowserRouter>
+              <SelectedCategoryProvider>
+                  <ProvidersProvider>
+                      <BrowserRouter>
+                          <Routes>
+                              <Route path="/" element={<Home />}></Route>
+                              <Route element={<ProtectedRoute />}>
+                                  <Route path="/profile" element={<Profile />}></Route>
+                              </Route>
+                              <Route element={<GuestRoute />}>
+                                  <Route path="/login" element={<Login />}></Route>
+                                  <Route path="/register" element={<Register />}></Route>
+                              </Route>
+                          </Routes>
+                      </BrowserRouter>
+                  </ProvidersProvider>
+              </SelectedCategoryProvider>
           </CategoriesProvider>
       </AuthProvider>
   );

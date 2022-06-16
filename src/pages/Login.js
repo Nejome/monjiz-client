@@ -16,15 +16,9 @@ export default function Login(){
     const {setAuth} = useAuthValue();
 
     function submit(values, actions){
-        api.post('/api/users/login', {
-          email: values.email,
-          password: values.password
-        })
+        api.post('/api/users/login', values)
             .then((response) => {
-                setAuth({
-                    token: response.data.data.token,
-                    user: response.data.data.user
-                });
+                setAuth({token: response.data.data.token});
 
                 navigate('/')
             })

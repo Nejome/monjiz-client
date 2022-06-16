@@ -1,4 +1,5 @@
 import {createContext, useContext} from "react";
+import PropTypes from 'prop-types';
 import {useAuth} from "../hooks";
 
 export const AuthContext = createContext();
@@ -14,3 +15,7 @@ export const AuthProvider = ({children}) => {
 };
 
 export const useAuthValue = () => useContext(AuthContext);
+
+AuthProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};

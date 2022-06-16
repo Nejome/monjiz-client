@@ -1,20 +1,38 @@
 import {
+    AuthContext,
+    AuthProvider,
+    useAuthValue
+} from './auth-context';
+
+import {
     CategoriesContext,
     CategoriesProvider,
     useCategoriesValue
 } from './categories-context';
 
 import {
-    AuthContext,
-    AuthProvider,
-    useAuthValue
-} from './auth-context';
+    SelectedCategoryContext,
+    SelectedCategoryProvider,
+    useSelectedCategoryValue
+} from './selected-category-context';
+
+import {
+    ProvidersContext,
+    ProvidersProvider,
+    useProvidersValue
+} from './providers-context'
 
 export {
+    AuthContext,
+    AuthProvider,
+    useAuthValue,
     CategoriesContext,
     CategoriesProvider,
     useCategoriesValue,
-    AuthContext,
-    AuthProvider,
-    useAuthValue
+    SelectedCategoryContext,
+    SelectedCategoryProvider,
+    useSelectedCategoryValue,
+    ProvidersContext,
+    ProvidersProvider,
+    useProvidersValue
 };

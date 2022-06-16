@@ -9,26 +9,17 @@ import {api} from "../api";
 import Alert from '../components/Alert';
 
 export default function Register(){
-
     const {categories} = useCategoriesValue();
     const [success, setSuccess] = useState(null);
+    const [error, setError] = useState(null);
 
     function submit(values, actions){
         var form = new FormData();
-        form.append('name', values.name);
-        form.append('email', values.email);
-        form.append('password', values.password);
-        form.append('category_id', values.category_id);
-        form.append('title', values.title);
-        form.append('country', values.country);
-        form.append('description', values.description);
-        form.append('image', values.image);
+        for(const [key, value] of Object.entries(values)) {
+            form.append(key, value)
+        }
 
-        api.post('/api/providers/register', form, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        })
+        api.post('/api/providers/register', form, {headers: {'Content-Type': 'multipart/form-data'}})
             .then((response) => {
                 setSuccess(response.data.message);
 
@@ -37,8 +28,12 @@ export default function Register(){
             .catch((error) => {
                 actions.setSubmitting(false)
 
-                for(const [key, value] of Object.entries(error.response.data.errors)) {
-                    actions.setFieldError(key, value)
+                if(error.response.status === 422){
+                    for(const [key, value] of Object.entries(error.response.data.errors)) {
+                        actions.setFieldError(key, value)
+                    }
+                }else{
+                    setError('عفواً حدث خلال التسجيل نرجو المحاولة لاحقاً')
                 }
             })
     }
@@ -60,6 +55,7 @@ export default function Register(){
                                 {({isSubmitting}) => (
                                     <Form className="mt-5 px-2 lg:px-10">
                                         {success && <Alert type="success" message={success} />}
+                                        {error && <Alert type="danger" message={error} />}
                                         <div className="grid grid-cols-6 gap-6">
                                             <div className="col-span-6 lg:col-span-3 mb-1">
                                                 <Input label="الإسم" name="name" type="text"/>
@@ -98,7 +94,7 @@ export default function Register(){
                                                 <File label="الصورة الشخصية" type="file" name="image" />
                                             </div>
 
-                                            <div className="col-span-6 lg:col-span-3 mb-1">
+                                            <div className="col-span-6 mb-1">
                                                 <TextArea label="الوصف" name="description"/>
                                             </div>
 
