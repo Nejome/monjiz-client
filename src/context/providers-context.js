@@ -1,15 +1,14 @@
 import  {createContext, useContext} from 'react';
 import PropTypes from 'prop-types';
 import {useProviders} from '../hooks'
-import {AuthProvider} from "./auth-context";
 
 export const ProvidersContext = createContext();
 
 export const ProvidersProvider = ({children}) => {
-    const {providers, setProviders} = useProviders();
+    const {providers, setProviders, loading} = useProviders();
 
     return (
-        <ProvidersContext.Provider value={{providers, setProviders}}>
+        <ProvidersContext.Provider value={{providers, setProviders, loading}}>
             {children}
         </ProvidersContext.Provider>
     );

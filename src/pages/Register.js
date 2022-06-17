@@ -33,7 +33,7 @@ export default function Register(){
                         actions.setFieldError(key, value)
                     }
                 }else{
-                    setError('عفواً حدث خلال التسجيل نرجو المحاولة لاحقاً')
+                    setError('عفواً حدث خطأ خلال التسجيل نرجو المحاولة لاحقاً')
                 }
             })
     }

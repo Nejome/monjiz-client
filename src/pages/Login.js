@@ -7,7 +7,7 @@ import Loader from "../components/loader";
 import {Input} from "../components/form";
 import Alert from "../components/Alert";
 import {useNavigate} from "react-router-dom";
-import {useAuthValue} from "../context"
+import {useAuthValue} from "../context";
 
 export default function Login(){
 

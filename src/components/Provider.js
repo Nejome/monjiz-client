@@ -64,6 +64,7 @@ export default function Provider({provider}){
                     </div>
                     <div className="mt-5 pr-5">
                         <h1>{provider.title}</h1>
+                        <p className="text-xs">{provider.user.email}</p>
                     </div>
                     <div className="pr-5 mt-3 mb-3">
                         <p className="text-sm">{provider.description}</p>

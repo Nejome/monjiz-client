@@ -6,10 +6,10 @@ import {AuthProvider} from "./auth-context";
 export const CategoriesContext = createContext();
 
 export const CategoriesProvider = ({children}) => {
-    const {categories, setCategories} = useCategories();
+    const {categories, setCategories, loading} = useCategories();
 
     return (
-        <CategoriesContext.Provider value={{categories, setCategories}}>
+        <CategoriesContext.Provider value={{categories, setCategories, loading}}>
             {children}
         </CategoriesContext.Provider>
     );
