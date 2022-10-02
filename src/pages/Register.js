@@ -1,68 +1,114 @@
+import {useState} from "react";
 import Header from "../components/layout/Header";
+import {useCategoriesValue} from "../context";
+import { Formik, Form } from 'formik';
+import {registerSchema} from '../schemas';
+import {Input, Select, TextArea, File} from '../components/form';
+import Loader from '../components/loader'
+import {api} from "../api";
+import Alert from '../components/Alert';
 
 export default function Register(){
+    const {categories} = useCategoriesValue();
+    const [success, setSuccess] = useState(null);
+    const [error, setError] = useState(null);
+
+    function submit(values, actions){
+        var form = new FormData();
+        for(const [key, value] of Object.entries(values)) {
+            form.append(key, value)
+        }
+
+        api.post('/api/providers/register', form, {headers: {'Content-Type': 'multipart/form-data'}})
+            .then((response) => {
+                setSuccess(response.data.message);
+
+                actions.resetForm();
+            })
+            .catch((error) => {
+                actions.setSubmitting(false)
+
+                if(error.response.status === 422){
+                    for(const [key, value] of Object.entries(error.response.data.errors)) {
+                        actions.setFieldError(key, value)
+                    }
+                }else{
+                    setError('عفواً حدث خطأ خلال التسجيل نرجو المحاولة لاحقاً')
+                }
+            })
+    }
+
     return (
         <div className="h-full">
             <Header />
 
             <main className="w-full">
                 <div className="container mx-auto mt-8">
-                    <div className="w-11/12 lg:w-8/12 mx-auto">
+                    <div className="w-11/12 lg:w-8/12 mx-auto lg:mb-10">
                         <div className="card px-5 py-5">
-                            <h1 className="text-center mt-5 text-gray-500 text-3xl">انشاء حساب</h1>
-                            <form className="mt-10 px-2 lg:px-10">
-                                <div className="grid grid-cols-6 gap-6">
-                                    <div className="col-span-6 lg:col-span-3 mb-2">
-                                        <label className="block text-gray-500">الإسم</label>
-                                        <input type="text" className="block w-full h-[43px] mt-3 px-3 py-2 border border-solid rounded focus:shadow focus:outline-none text-gray-500"/>
-                                    </div>
+                            <h1 className="text-center  text-gray-500 text-3xl">انشاء حساب</h1>
+                            <Formik
+                                initialValues={{name: '', email: '', category_id: '', title: '', country: '', image: '', description: '', password: ''}}
+                                validationSchema={registerSchema}
+                                onSubmit={submit}
+                                >
+                                {({isSubmitting}) => (
+                                    <Form className="mt-5 px-2 lg:px-10">
+                                        {success && <Alert type="success" message={success} />}
+                                        {error && <Alert type="danger" message={error} />}
+                                        <div className="grid grid-cols-6 gap-6">
+                                            <div className="col-span-6 lg:col-span-3 mb-1">
+                                                <Input label="الإسم" name="name" type="text"/>
+                                            </div>
 
-                                    <div className="col-span-6 lg:col-span-3 mb-2">
-                                        <label className="block text-gray-500">البريد الإلكتروني</label>
-                                        <input type="email" className="block w-full h-[43px] mt-3 px-3 py-2 border border-solid rounded focus:shadow focus:outline-none text-gray-500"/>
-                                    </div>
+                                            <div className="col-span-6 lg:col-span-3 mb-1">
+                                                <Input label="البريد الإلكتروني" name="email" type="email"/>
+                                            </div>
 
-                                    <div className="col-span-6 lg:col-span-3 mb-2">
-                                        <label className="block text-gray-500">القسم</label>
-                                        <select className="block w-full h-[43px] mt-3 px-3 py-2 border border-solid rounded focus:shadow focus:outline-none text-gray-500">
-                                            <option>البرمجة والتطوير</option>
-                                            <option>التصميم</option>
-                                            <option>التسويق الإلكتروني</option>
-                                            <option>الكتابة والترجمة</option>
-                                            <option>كتابة المحتوي</option>
-                                        </select>
-                                    </div>
+                                            <div className="col-span-6 lg:col-span-3 mb-1">
+                                                <Input label="كلمة المرور" name="password" type="password"/>
+                                            </div>
 
-                                    <div className="col-span-6 lg:col-span-3 mb-2">
-                                        <label className="block text-gray-500">عنوان الخدمة</label>
-                                        <input type="text" className="block w-full h-[43px] mt-3 px-3 py-2 border border-solid rounded focus:shadow focus:outline-none text-gray-500"/>
-                                    </div>
+                                            <div className="col-span-6 lg:col-span-3 mb-1">
+                                                <Input label="تأكيد كلمة المرور" name="password_confirmation" type="password"/>
+                                            </div>
 
-                                    <div className="col-span-6 lg:col-span-3 mb-2">
-                                        <label className="block text-gray-500">الدولة</label>
-                                        <input type="text" className="block w-full h-[43px] mt-3 px-3 py-2 border border-solid rounded focus:shadow focus:outline-none text-gray-500"/>
-                                    </div>
+                                            <div className="col-span-6 lg:col-span-3 mb-1">
+                                                <Select label="القسم" name="category_id">
+                                                    <option></option>
+                                                    {categories.map((category) => (
+                                                        <option key={category.id} value={category.id}>{category.title}</option>
+                                                    ))}
+                                                </Select>
+                                            </div>
 
-                                    <div className="col-span-6 lg:col-span-3 mb-2">
-                                        <label className="block text-gray-500">الصورة الشخصية</label>
-                                        <input type="file" className="block w-full h-[43px] mt-3 px-3 py-2 border border-solid rounded focus:shadow focus:outline-none text-gray-500"/>
-                                    </div>
+                                            <div className="col-span-6 lg:col-span-3 mb-1">
+                                                <Input label="عنوان الخدمة" name="title" type="text"/>
+                                            </div>
 
-                                    <div className="col-span-6 lg:col-span-3 mb-2">
-                                        <label className="block text-gray-500">كلمة المرور</label>
-                                        <input type="password" className="block w-full h-[43px] mt-3 px-3 py-2 border border-solid rounded focus:shadow focus:outline-none text-gray-500"/>
-                                    </div>
+                                            <div className="col-span-6 lg:col-span-3 mb-1">
+                                                <Input label="الدولة" name="country" type="text"/>
+                                            </div>
 
-                                    <div className="col-span-6 lg:col-span-3 mb-2">
-                                        <label className="block text-gray-500">تأكيد كلمة المرور</label>
-                                        <input type="password" className="block w-full h-[43px] mt-3 px-3 py-2 border border-solid rounded focus:shadow focus:outline-none text-gray-500"/>
-                                    </div>
-                                </div>
+                                            <div className="col-span-6 lg:col-span-3 mb-1">
+                                                <File label="الصورة الشخصية" type="file" name="image" />
+                                            </div>
 
-                                <div className="text-center mt-10">
-                                    <button type="submit" className="btn1">تسجيل الدخول</button>
-                                </div>
-                            </form>
+                                            <div className="col-span-6 mb-1">
+                                                <TextArea label="الوصف" name="description"/>
+                                            </div>
+
+                                        </div>
+
+                                        <div className="mt-5">
+                                            <button type="submit" className="btn1 min-w-[135px] flex items-center justify-center mx-auto" disabled={isSubmitting}>
+                                                {isSubmitting ? <Loader w="25px" h="25px" /> :'تسجيل'}
+                                            </button>
+                                        </div>
+
+                                    </Form>
+                                )}
+                            </Formik>
                         </div>
                     </div>
                 </div>
