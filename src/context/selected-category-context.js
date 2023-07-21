@@ -1,6 +1,5 @@
 import  {useState, createContext, useContext} from 'react';
 import PropTypes from 'prop-types';
-import {AuthProvider} from "./auth-context";
 
 export const SelectedCategoryContext = createContext();
 
