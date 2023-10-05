@@ -4,28 +4,30 @@ import Modal from 'react-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
-export default function Provider({provider}){
+export default function Provider({provider}) {
     const [showDetails, setShowDetails] = useState(false);
 
     return (
         <>
-            <div className="card">
-                <div className="px-4 py-4">
-                    <div className="flex justify-start">
-                        <figure className="ml-3">
-                            <img className="w-[70px] height-[70px] rounded-full" src={provider.image} alt={provider.user.name}/>
-                        </figure>
-                        <div className="flex flex-col">
-                            <h1 className="text-green-550">{provider.user.name}</h1>
-                            <p className="text-sm">{provider.category.title}</p>
-                            <p className="text-xs">{provider.country}</p>
+            <div className="w-full sm:w-6/12 xl:w-4/12 mt-4 pl-4">
+                <div className="card">
+                    <div className="px-4 py-4">
+                        <div className="flex justify-start">
+                            <div className="ml-3">
+                                <img className="inline-block w-16 h-16 rounded-full" src={provider.image} alt={provider.user.name}/>
+                            </div>
+                            <div className="flex flex-col">
+                                <h1 className="text-green-550">{provider.user.name}</h1>
+                                <p className="text-sm">{provider.category.title}</p>
+                                <p className="text-xs">{provider.country}</p>
+                            </div>
                         </div>
-                    </div>
-                    <div className="mt-5 pr-5">
-                        <h1>{provider.title}</h1>
-                    </div>
-                    <div className="text-right mt-5">
-                        <button onClick={() => setShowDetails(true)} className="btn1 py-1 px-4 text-sm">عرض المزيد</button>
+                        <div className="mt-5 pr-5">
+                            <h1>{provider.title}</h1>
+                        </div>
+                        <div className="text-right mt-5">
+                            <button onClick={() => setShowDetails(true)} className="btn1 py-1 px-4 text-sm">عرض المزيد</button>
+                        </div>
                     </div>
                 </div>
             </div>

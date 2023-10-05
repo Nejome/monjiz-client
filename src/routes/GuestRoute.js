@@ -1,11 +1,11 @@
 import {Navigate, Outlet} from "react-router-dom";
-import {useAuthValue} from "../context";
+import {useSelector} from "react-redux";
 
-export default function GuestRoute(){
-    const {auth} = useAuthValue();
+export default function GuestRoute() {
+    const auth = useSelector(state => state.auth);
 
-    if(auth){
-        return <Navigate to="/" replace/>;
+    if (auth.user) {
+        return <Navigate to="/" replace />;
     }
 
     return <Outlet />;
